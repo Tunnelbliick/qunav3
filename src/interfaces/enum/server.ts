@@ -1,0 +1,7 @@
+export enum Server {
+    BANCHO = "BANCHO",
+    AKATSUKI = "AKATSUKI",
+    AKATSUKIRX = "AKATSUKIRX",
+    AKATSUKIAP = "AKATSUKIAP",
+    GATARI = "GATARI",
+}
