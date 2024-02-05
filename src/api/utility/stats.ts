@@ -105,7 +105,7 @@ export function calculateFcAcc(score: OsuScore, total_objects: number) {
             fc_acc = 100 * ((2 * (score.statistics.great + score.statistics.miss!) + score.statistics.ok!) / (2 * (score.statistics.great + score.statistics.ok! + score.statistics.miss!)))
             break;
         case "fruits":
-            fc_acc = 100 * ((score.statistics.great + score.statistics.ok! + score.statistics.meh!) / (score.statistics.great + score.statistics.meh! + score.statistics.ok! + score.statistics.katu!))
+            fc_acc = 100 * ((score.statistics.great + score.statistics.ok! + score.statistics.meh!) / (score.statistics.great + score.statistics.meh! + score.statistics.ok! + score.statistics.small_tick_miss!))
             break;
     }
 
@@ -125,7 +125,7 @@ export function calculateAcc(score: OsuScore, total_objects: number) {
             fc_acc = 100 * ((2 * (score.statistics.great) + score.statistics.ok!) / (2 * (score.statistics.great + score.statistics.ok! + score.statistics.miss!)))
             break;
         case "fruits":
-            fc_acc = 100 * ((score.statistics.great + score.statistics.ok! + score.statistics.meh!) / (score.statistics.great + score.statistics.ok! + score.statistics.meh! + score.statistics.katu!))
+            fc_acc = 100 * ((score.statistics.great + score.statistics.ok! + score.statistics.meh!) / (score.statistics.great + score.statistics.ok! + score.statistics.meh! + score.statistics.small_tick_miss!))
             break;
     }
 

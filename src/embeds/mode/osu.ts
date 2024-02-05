@@ -4,6 +4,7 @@ import { replaceDots, round } from "../../api/utility/comma";
 import { calculateFcAcc } from "../../api/utility/stats";
 import { rank_icons } from "../../utility/icons";
 import { RecentEmbedParameters } from "../recent";
+import { displayStandard } from "../../interfaces/osu/score/osuScore";
 
 export function stdFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
 
@@ -46,7 +47,7 @@ export function stdFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
         },
         {
             name: 'Hits',
-            value: `{${score.statistics.great}/${score.statistics.ok!}/${score.statistics.meh!}/${score.statistics.miss!}}`,
+            value: `${displayStandard(score.statistics)}`,
             inline: true
         },
         {
@@ -61,7 +62,7 @@ export function stdFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
         },
         {
             name: 'Hits',
-            value: `{${param.total_objects - score.statistics.ok! - score.statistics.meh!}/${score.statistics.ok}/${score.statistics.meh}/${0}}`,
+            value: `${displayStandard(score.maximum_statistics)}`,
             inline: true
         },
         {
@@ -91,7 +92,7 @@ export function stdCompact(param: RecentEmbedParameters, embed: EmbedBuilder) {
     embed.setFields(
         {
             name: `**${rankEmote} ${progress} ${appliedmods == "+" ? "" : appliedmods}**  ${replaceDots(score.total_score)}  (${replaceDots(round(score.accuracy * 100))}%) Attempted <t:${currentTimeInSeconds}:R>`,
-            value: `**${round(performacne.simulated)}**/${round(performacne.accSS)}pp  [**${score.max_combo}x**/${map.max_combo}x]  {${score.statistics.great!}/${score.statistics.ok!}/${score.statistics.meh!}/${score.statistics.miss!}}`,
+            value: `**${round(performacne.simulated)}**/${round(performacne.accSS)}pp  [**${score.max_combo}x**/${map.max_combo}x]  ${displayStandard(score.statistics)}`,
             inline: true
         });
 

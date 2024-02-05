@@ -1,22 +1,13 @@
+import { stat } from "fs";
 import { Mod } from "../Mod/mod";
 
 export interface OsuScore {
     max_pp?: number;
     position?: number;
     mods_id?: number;
-    maximum_statistics: {
-        great: number;
-        legacy_combo_increase: number;
-    };
+    maximum_statistics: statistics;
     mods: Array<Mod>;
-    statistics: {
-        ok?: number;
-        meh?: number;
-        miss?: number;
-        great: number;
-        katu?: number;
-        geki?: number;
-    };
+    statistics: statistics;
     beatmap_id: number;
     best_id: any;
     id: number;
@@ -117,12 +108,17 @@ export interface OsuScore {
 }
 
 export interface statistics {
+    great: number;
     ok?: number;
     meh?: number;
     miss?: number;
-    great: number;
-    katu?: number;
-    geki?: number;
+    large_tick_hit?: number; // ctb
+    small_tick_hit?: number; // ctb
+    large_tick_miss?: number; // ctb
+    small_tick_miss?: number; // ctb
+    perfect?: number; // mania
+    good?: number; // mania
+    legacy_combo_increase?: number;
 }
 
 export interface oldStatistics {
@@ -155,9 +151,24 @@ export function parseStatisticsOldToNew(statistics: oldStatistics): statistics {
         ok: statistics.count_100,
         meh: statistics.count_50,
         miss: statistics.count_miss,
-        geki: statistics.count_geki,
-        katu: statistics.count_katu,
+        small_tick_miss: statistics.count_katu,
+        perfect: statistics.count_geki,
+        good: statistics.count_katu
     }
+}
 
+export function displayStandard(statistics: statistics): string {
+    return `{${statistics.great ?? 0}/${statistics.ok ?? 0}/${statistics.meh ?? 0}/${statistics.miss ?? 0}}`;
+}
 
+export function displayMania(statistics: statistics): string {
+    return `{${statistics.perfect ?? 0}/${statistics.great ?? 0}/${statistics.good ?? 0}/${statistics.ok ?? 0}/${statistics.meh ?? 0}/${statistics.miss ?? 0}}`;
+}
+
+export function displayTaiko(statistics: statistics): string {
+    return `{${statistics.great ?? 0}/${statistics.ok ?? 0}/${statistics.miss ?? 0}}`;
+}
+
+export function displayFruits(statistics: statistics): string {
+    return `{${statistics.great ?? 0}/${statistics.large_tick_hit ?? 0}/${statistics.small_tick_hit ?? 0}/${statistics.miss ?? 0}}`;
 }

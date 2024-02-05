@@ -182,7 +182,7 @@ function convertToOsu(score: AkatsukiScore) {
         ruleset_id: score.beatmap.mode_int,
         mods: decomposeMods(+score.enabled_mods),
         passed: true,
-        pp: +score.pp,
+        pp: parseInt(score.pp),
         replay: false,
         total_score: +score.score,
         statistics: {
@@ -203,7 +203,6 @@ function convertToOsu(score: AkatsukiScore) {
         legacy_total_score: +score.score,
         maximum_statistics: {
             great: 0,
-            legacy_combo_increase: 0
         },
         mods_id: undefined,
         position: undefined,

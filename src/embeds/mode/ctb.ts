@@ -4,6 +4,7 @@ import { replaceDots, round } from "../../api/utility/comma";
 import { calculateFcAcc } from "../../api/utility/stats";
 import { RecentEmbedParameters } from "../recent";
 import { rank_icons } from "../../utility/icons";
+import { displayFruits, statistics } from "../../interfaces/osu/score/osuScore";
 
 export function ctbFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
 
@@ -17,6 +18,7 @@ export function ctbFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
     // Play data
     // @ts-ignore
     const rankEmote: string = rank_icons[score?.rank];
+    const fcStatistic: statistics = score.statistics;
 
 
     embed.addFields([
@@ -47,7 +49,7 @@ export function ctbFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
         },
         {
             name: 'Hits',
-            value: `{${score.statistics.great}/${score.statistics.ok}/${score.statistics.meh}/${score.statistics.miss}}`,
+            value: `${displayFruits(score.statistics)}`,
             inline: true
         },
         {
@@ -62,7 +64,7 @@ export function ctbFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
         },
         {
             name: 'Hits',
-            value: `{${score.statistics.great + score.statistics.miss!}/${score.statistics.ok}/${score.statistics.meh}/${0}}`,
+            value: `${displayFruits(score.maximum_statistics)}`,
             inline: true
         },
         {
@@ -92,7 +94,7 @@ export function ctbCompact(param: RecentEmbedParameters, embed: EmbedBuilder) {
     embed.setFields(
         {
             name: `**${rankEmote} ${progress} ${appliedmods == "+" ? "" : appliedmods}**    ${replaceDots(score.total_score)}    (${replaceDots((score.accuracy * 100).toFixed(2))}%)\nMap attempted <t:${currentTimeInSeconds}:R>`,
-            value: `**${round(performacne.simulated)}**/${performacne.accSS}pp  [**${score.max_combo}x**/${map.max_combo}x]  {${score.statistics.great}/${score.statistics.ok}/${score.statistics.meh}/${score.statistics.miss}}`,
+            value: `**${round(performacne.simulated)}**/${round(performacne.accSS)}pp  [**${score.max_combo}x**/${map.max_combo}x]  ${displayFruits(score.statistics)}`,
             inline: true
         });
 

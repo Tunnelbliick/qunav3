@@ -3,6 +3,7 @@ import { replaceDots, round } from "../../api/utility/comma";
 import { RecentEmbedParameters } from "../recent";
 import { buildBeatmapStats } from "../../api/utility/beatmap";
 import { rank_icons } from "../../utility/icons";
+import { displayMania } from "../../interfaces/osu/score/osuScore";
 
 export function maniaFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
 
@@ -43,7 +44,7 @@ export function maniaFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
         },
         {
             name: 'Hits',
-            value: `{${score.statistics.geki}/${score.statistics.great}/${score.statistics.katu}/${score.statistics.ok}/${score.statistics.meh}/${score.statistics.miss}}`,
+            value: `${displayMania(score.statistics)}`,
             inline: true
         },
         {
@@ -72,7 +73,7 @@ export function maniaCompact(param: RecentEmbedParameters, embed: EmbedBuilder) 
     embed.setFields(
         {
             name: `**${rankEmote} ${progress} ${appliedmods == "+" ? "" : appliedmods}**    ${replaceDots(score.total_score)}    (${replaceDots(round(score.accuracy * 100))}%)\nMap attempted <t:${currentTimeInSeconds}:R>`,
-            value: `**${round(performacne.simulated)}**/${round(performacne.accSS)}pp  [ **${score.max_combo}x** ]  {${score.statistics.geki}/${score.statistics.great}/${score.statistics.katu}/${score.statistics.ok}/${score.statistics.meh}/${score.statistics.miss}}`,
+            value: `**${round(performacne.simulated)}**/${round(performacne.accSS)}pp  [ **${score.max_combo}x** ]  ${displayMania(score.statistics)}`,
             inline: true
         });
 

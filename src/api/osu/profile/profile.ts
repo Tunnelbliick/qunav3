@@ -451,12 +451,12 @@ function akatsukiToOsu(user: AkatsukiUser, info: AkatsukiUserInfo, rank?: Akatsu
         support_level: 0, // Assuming no direct equivalent
         user_achievements: [], // Assuming no direct equivalent
         rank_history: {
-            mode: '', // Assuming no direct equivalent
-            data: [] // Assuming no direct equivalent
+            mode: akatsukiModeToOsuMode(user.mode), // Assuming no direct equivalent
+            data: akatsukiHistoryToOsuHistory(rank) // Assuming no direct equivalent
         },
         rankHistory: {
-            mode: '', // Assuming no direct equivalent
-            data: [] // Assuming no direct equivalent
+            mode: akatsukiModeToOsuMode(user.mode), // Assuming no direct equivalent
+            data: akatsukiHistoryToOsuHistory(rank) // Assuming no direct equivalent
         },
         ranked_and_approved_beatmapset_count: 0, // Assuming no direct equivalent
         unranked_beatmapset_count: 0 // Assuming no direct equivalent
@@ -479,7 +479,7 @@ function akatsukiModeToOsuMode(mode_int: number): string {
     }
 }
 
-function akatsukiHistoryToOsuHistory(rank: AkatsukiUserRank) {
+function akatsukiHistoryToOsuHistory(rank?: AkatsukiUserRank) {
 
     const data: number[] = [];
 

@@ -80,7 +80,7 @@ function handleInteractionOptions(interaction: ChatInputCommandInteraction, defa
     recentPlayArguments.search = options.getString("query") === null ? "" : options.getString("query")!.toLowerCase()!;
     recentPlayArguments.offset = options.getNumber("index") === null ? 0 : options.getNumber("index")! - 1;
     recentPlayArguments.rank = options.getString("rank") === null ? undefined : options.getString("rank")!.toLowerCase()!;
-    recentPlayArguments.include_fails = options.getBoolean("fails") === null ? false : options.getBoolean("fails")!;
+    recentPlayArguments.include_fails = options.getBoolean("fails") === null ? true : options.getBoolean("fails")!;
 
     if (recentPlayArguments.discordid) {
         recentPlayArguments.discordid = recentPlayArguments.discordid.replace("<@", "").replace(">", "");

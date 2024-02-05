@@ -4,6 +4,7 @@ import { replaceDots, round } from "../../api/utility/comma";
 import { calculateFcAcc } from "../../api/utility/stats";
 import { RecentEmbedParameters } from "../recent";
 import { rank_icons } from "../../utility/icons";
+import { displayTaiko } from "../../interfaces/osu/score/osuScore";
 
 export function taikoFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
 
@@ -47,7 +48,7 @@ export function taikoFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
         },
         {
             name: 'Hits',
-            value: `{${score.statistics.great}/${score.statistics.ok!}/${score.statistics.miss!}}`,
+            value: `${displayTaiko(score.statistics)}`,
             inline: true
         },
         {
@@ -62,7 +63,7 @@ export function taikoFields(param: RecentEmbedParameters, embed: EmbedBuilder) {
         },
         {
             name: 'Hits',
-            value: `{${param.total_objects - score.statistics.ok!}/${score.statistics.ok!}/${0}}`,
+            value: `${displayTaiko(score.maximum_statistics)}`,
             inline: true
         },
         {
@@ -92,7 +93,7 @@ export function taikoCompact(param: RecentEmbedParameters, embed: EmbedBuilder) 
     embed.setFields(
         {
             name: `**${rankEmote} ${progress} ${appliedmods == "+" ? "" : appliedmods}**    ${replaceDots(score.total_score)}    (${replaceDots((score.accuracy * 100).toFixed(2))}%)\nMap attempted <t:${currentTimeInSeconds}:R>`,
-            value: `**${round(performacne.simulated)}**/${round(performacne.accSS)}pp  [**${score.max_combo}x**/${map.max_combo}x]  {${score.statistics.great}/${score.statistics.ok!}/${score.statistics.meh!}/${score.statistics.miss!}}`,
+            value: `**${round(performacne.simulated)}**/${round(performacne.accSS)}pp  [**${score.max_combo}x**/${map.max_combo}x]  ${displayTaiko(score.statistics)}`,
             inline: true
         });
 
