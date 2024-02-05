@@ -112,12 +112,12 @@ export async function recent(channel: TextChannel, user: User, message: Message,
         if (interaction) {
             interaction.editReply({ embeds: [embed] }).then((msg) => {
 
-                setTimeout(() => updateMessage(msg, recentScore), 1000);
+                setTimeout(() => updateMessage(msg, recentScore), 60000);
             });
         } else {
             channel.send({ embeds: [embed] }).then((msg) => {
 
-                setTimeout(() => updateMessage(msg, recentScore), 1000);
+                setTimeout(() => updateMessage(msg, recentScore), 60000);
             });
         }
 

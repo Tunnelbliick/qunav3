@@ -97,37 +97,40 @@ export function calculateFcAcc(score: OsuScore, total_objects: number) {
 
     switch (modeIdToEnum(score.ruleset_id)) {
         case "osu":
-            fc_acc = (100 * (6 * (total_objects - score.statistics.great - score.statistics.meh!) + 2 * score.statistics.ok! + score.statistics.meh!) / (6 * total_objects));
+            fc_acc = (100 * (6 * (total_objects - score.statistics.great - (score.statistics.meh ?? 0)) + 2 * (score.statistics.ok ?? 0) + (score.statistics.meh ?? 0)) / (6 * total_objects));
             break;
         case "mania":
+            // Mania calculation logic, if any
             break;
         case "taiko":
-            fc_acc = 100 * ((2 * (score.statistics.great + score.statistics.miss!) + score.statistics.ok!) / (2 * (score.statistics.great + score.statistics.ok! + score.statistics.miss!)))
+            fc_acc = 100 * ((2 * ((score.statistics.great ?? 0) + (score.statistics.miss ?? 0) + (score.statistics.ok ?? 0))) / (2 * total_objects));
             break;
         case "fruits":
-            fc_acc = 100 * ((score.statistics.great + score.statistics.ok! + score.statistics.meh!) / (score.statistics.great + score.statistics.meh! + score.statistics.ok! + score.statistics.small_tick_miss!))
+            fc_acc = 100 * ((score.statistics.great ?? 0) + (score.statistics.ok ?? 0) + (score.statistics.meh ?? 0)) / ((score.statistics.great ?? 0) + (score.statistics.ok ?? 0) + (score.statistics.meh ?? 0) + (score.statistics.small_tick_miss ?? 0));
             break;
     }
 
     return fc_acc;
 }
 
+
 export function calculateAcc(score: OsuScore, total_objects: number) {
-    let fc_acc = 100;
+    let acc = 100;
 
     switch (modeIdToEnum(score.ruleset_id)) {
         case "osu":
-            fc_acc = (100 * (6 * (score.statistics.great) + 2 * score.statistics.ok! + score.statistics.meh!) / (6 * total_objects));
+            acc = (100 * (6 * (score.statistics.great ?? 0) + 2 * (score.statistics.ok ?? 0) + (score.statistics.meh ?? 0)) / (6 * total_objects));
             break;
         case "mania":
+            // Mania calculation logic, if any
             break;
         case "taiko":
-            fc_acc = 100 * ((2 * (score.statistics.great) + score.statistics.ok!) / (2 * (score.statistics.great + score.statistics.ok! + score.statistics.miss!)))
+            acc = 100 * ((2 * (score.statistics.great ?? 0) + (score.statistics.ok ?? 0)) / (2 * ((score.statistics.great ?? 0) + (score.statistics.ok ?? 0) + (score.statistics.miss ?? 0))));
             break;
         case "fruits":
-            fc_acc = 100 * ((score.statistics.great + score.statistics.ok! + score.statistics.meh!) / (score.statistics.great + score.statistics.ok! + score.statistics.meh! + score.statistics.small_tick_miss!))
+            acc = 100 * ((score.statistics.great ?? 0) + (score.statistics.ok ?? 0) + (score.statistics.meh ?? 0)) / ((score.statistics.great ?? 0) + (score.statistics.ok ?? 0) + (score.statistics.meh ?? 0) + (score.statistics.small_tick_miss ?? 0));
             break;
     }
 
-    return fc_acc;
+    return acc;
 }

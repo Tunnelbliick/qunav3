@@ -91,7 +91,7 @@ async function getCommonData(score: OsuScore) {
     const isunranked = score.pp === null ? true : false;
 
     const beatmap = getBeatmapFromCache(score.beatmap.id, score.beatmap.checksum);
-    const user = getBanchoUserById(score.user_id);
+    const user = getBanchoUserById(score.user_id, modeIdToEnum(score.ruleset_id));
     const leaderboard = getLeaderBoardPositionByScore(score.beatmap.id, modeIdToEnum(score.ruleset_id), score);
     const best = getTopPositionForUser(score, modeIdToEnum(score.ruleset_id), isunranked);
 

@@ -57,7 +57,7 @@ export function generateRecentEmbed(score: RecentScore, stored?: boolean) {
     let progressString: string = "";
 
     if (play.rank == "F") {
-        const progress = 100 / (map.count_circles + map.count_sliders + map.count_spinners) * (play.statistics.great! + play.statistics.ok! + play.statistics.meh! + play.statistics.miss!);
+        const progress = 100 / (map.count_circles + map.count_sliders + map.count_spinners) * (play.statistics.great + (play.statistics.ok ?? 0) + (play.statistics.meh ?? 0) + (play.statistics.miss ?? 0));
         progressString = `(${replaceFirstDots(progress.toFixed(2))}%)`;
     }
 
