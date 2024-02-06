@@ -14,7 +14,7 @@ import { getBeatmapDifficulty } from "../../pp/rosupp/difficulty";
 import { loadacc100WithoutBeatMapDownload } from "../../pp/db/loadSS";
 import { difficulty } from "../../../interfaces/pp/difficulty";
 import { OsuBeatmap } from "../../../interfaces/osu/beatmap/osuBeatmap";
-import { TopPosition } from "../top/top";
+import { TopPosition } from "../top/topBancho";
 import { LeaderboardPosition } from "../leaderboard/leaderboard";
 import { generateRecentEmbed, generateRecentEmbedCompact } from "../../../embeds/recent";
 import { handleRecentParameters } from "./handleRecentParameters";

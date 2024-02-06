@@ -2,7 +2,6 @@ import { v2 } from "osu-api-extended"
 import { login } from "../../utility/banchoLogin";
 import { Gamemode } from "../../../interfaces/enum/gamemodes";
 import { OsuScore } from "../../../interfaces/osu/score/osuScore";
-import { Best } from "../../../interfaces/osu/top/top";
 import { ScoresDetails } from "osu-api-extended/dist/types/scores_details";
 
 export enum LeaderboardType {
@@ -45,34 +44,23 @@ export async function getLeaderBoard(mapid: number, mode: Gamemode) {
         return "osuapierr";
     }
 
-    const leaderboardArray: Array<Best> = [];
 
     if (leaderboard == undefined) {
         return undefined;
     }
 
-    leaderboard.forEach((play: OsuScore, index: number) => {
-        leaderboardArray.push({ position: index, value: play });
-    })
-
-    return leaderboardArray;
+    return leaderboard;
 }
 
 export async function getLeaderBoardPosition(mapid: number, mode: Gamemode, scoreid: number) {
 
     const leaderboard: OsuScore[] = await loadLeaderBoard(mapid, mode);
 
-    const leaderboardArray: Best[] = [];
-
     if (leaderboard == undefined) {
         return null;
     }
 
-    leaderboard.forEach((play: OsuScore, index: number) => {
-        leaderboardArray.push({ position: index, value: play });
-    })
-
-    const leaderboard_found: Best | undefined = leaderboardArray.find((t: Best) => t.value.id === scoreid);
+    const leaderboard_found = leaderboard.find((t: OsuScore) => t.id === scoreid);
     let leaderboard_position = undefined;
 
     if (leaderboard_found !== undefined)
@@ -85,21 +73,15 @@ export async function getLeaderBoardPositionByScore(mapid: number, mode: Gamemod
 
     const leaderboard: OsuScore[] = await loadLeaderBoard(mapid, mode);
 
-    const leaderboardArray:Best[] = [];
-
     if (leaderboard == undefined) {
         return undefined;
     }
 
-    leaderboard.forEach((play: OsuScore, index: number) => {
-        leaderboardArray.push({ position: index, value: play });
-    })
-
     const position: LeaderboardPosition = new LeaderboardPosition();
-    let found_leaderboard: Best | undefined = leaderboardArray.find((t: Best) => t.value.id === score.id);
+    let found_leaderboard = leaderboard.find((t: OsuScore) => t.id === score.id);
 
     if (found_leaderboard === undefined) {
-        found_leaderboard = leaderboardArray.find((t: Best) => t.value.total_score < score.total_score);
+        found_leaderboard = leaderboard.find((t: OsuScore) => t.total_score < score.total_score);
 
         if (found_leaderboard !== undefined) {
             position.index = found_leaderboard.position;

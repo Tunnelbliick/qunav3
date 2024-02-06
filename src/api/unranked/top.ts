@@ -39,11 +39,14 @@ export async function loadUnrankedTop(user_id: number, mode: Gamemode) {
 
     })
 
+    let index = 1;
+
     top100.forEach((top: Score) => {
 
         const beatmap = beatmapMap.get(top.mapid);
 
         const score: OsuScore = {
+            position: index,
             accuracy: top.accuracy,
             beatmap: beatmap!,
             beatmapset: beatmap!.beatmapset,
@@ -78,6 +81,8 @@ export async function loadUnrankedTop(user_id: number, mode: Gamemode) {
 
 
         };
+
+        index++;
 
         returnArray.push(score);
 

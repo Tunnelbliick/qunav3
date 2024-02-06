@@ -29,8 +29,3 @@ export class TopPlaysfilter {
     discordid: string = "";
     username: string = "";
 }
-
-export interface Best {
-    position: number,
-    value: OsuScore,
-}

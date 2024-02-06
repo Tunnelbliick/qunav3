@@ -1,8 +1,7 @@
 import { ApplicationCommandOptionType, ChatInputCommandInteraction, Message, TextChannel, User } from "discord.js";
 import { CommandObject, CommandType } from "wokcommands";
-import { profile } from "../../../api/osu/profile/profile";
 import { Gamemode } from "../../../interfaces/enum/gamemodes";
-import { recent } from "../../../api/osu/recent/recentHandler";
+import { top } from "../../../api/osu/top/topHandler";
 
 
 type CallbackParams = {
@@ -75,22 +74,45 @@ export default {
             type: ApplicationCommandOptionType.Number,
         },
         {
-            name: 'fails',
-            description: 'Include failed plays',
+            name: 'accuracy',
+            description: 'Filter for accuracy using ex: <100 | >95 | 95-100',
+            required: false,
+            type: ApplicationCommandOptionType.String,
+        },
+        {
+            name: 'combo',
+            description: 'Filter for combo using ex: <1000 | >1000 | 500-1000',
+            required: false,
+            type: ApplicationCommandOptionType.String,
+        },
+        {
+            name: 'reverse',
+            description: 'Reverse the order of the return',
             required: false,
             type: ApplicationCommandOptionType.Boolean,
+        },
+        {
+            name: 'sort',
+            description: 'Sort the List',
+            required: false,
+            type: ApplicationCommandOptionType.String,
+            choices: [
+                { name: "acc", value: "acc", },
+                { name: "combo", value: "combo", },
+                { name: "length", value: "length", }
+            ]
         },
         {
             name: 'server',
             description: 'Which server to lookup the user on',
             required: false,
             type: ApplicationCommandOptionType.String,
-            choices: [{ name: "Bancho", value: "BANCHO" }, { name: "Akatsuki", value: "AKATSUKI" }, { name: "Akatsuki Relax", value: "AKATSUKIRX" }, { name: "Akatsuki Atopilot", value: "AKATSUKIAP" }]
+            choices: [{ name: "Bancho", value: "BANCHO" }]
         },
     ],
 
     callback: ({ channel, user, message, interaction, args }: CallbackParams) => {
-        recent(channel, user, message, interaction, args, Gamemode.OSU);
+        top(channel, user, message, interaction, args, Gamemode.OSU);
     },
 
 } as CommandObject;

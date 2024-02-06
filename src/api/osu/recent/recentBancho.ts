@@ -9,11 +9,11 @@ import { CommonData, CommonDataReturnTypes, RecentPlayArguments, RecentScore, ge
 import { getBeatmapFromCache } from "../beatmap/beatmap";
 import { getBanchoUserById } from "../profile/profile";
 import { LeaderboardPosition, getLeaderBoardPositionByScore } from "../leaderboard/leaderboard";
-import { TopPosition, getTopPositionForUser } from "../top/top";
 import { sentryError } from "../../utility/sentry";
 import { OsuBeatmap } from "../../../interfaces/osu/beatmap/osuBeatmap";
 import { OsuUser } from "../../../interfaces/osu/user/osuUser";
 import { ScoresDetails } from "osu-api-extended/dist/types/scores_details";
+import { TopPosition, getTopPositionForUser } from "../top/topBancho";
 
 export async function getRecentBancho(
     userid: number,

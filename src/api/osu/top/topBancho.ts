@@ -1,6 +1,6 @@
 import { v2 } from "osu-api-extended";
 import { OsuScore } from "../../../interfaces/osu/score/osuScore";
-import { Best, Top, TopData } from "../../../interfaces/osu/top/top";
+import { Top, TopData } from "../../../interfaces/osu/top/top";
 import { loadUnrankedTop } from "../../unranked/top";
 import { login } from "../../utility/banchoLogin";
 import { Gamemode, modeIdToEnum } from "../../../interfaces/enum/gamemodes";
@@ -8,6 +8,10 @@ import { BanchoParams } from "../../../interfaces/arguments";
 import userHash from "../../../mongodb/userHash";
 import cacheTop from "../../../mongodb/cacheTop";
 import { convertModsToStrings } from "../../../interfaces/osu/Mod/mod";
+import { TopPlayArguments, UserBest } from "./topHandler";
+import { topFilterAndSort } from "./utility/filterTopPlays";
+import { downloadBeatmap } from "../../utility/downloadbeatmap";
+import { off } from "process";
 const makeHash = require("hash-sum")
 
 export enum TopType {
@@ -23,7 +27,34 @@ export class TopPosition {
     type: TopType | undefined = undefined;
 }
 
-export async function getTopForUser(userid: number, mode: Gamemode, offset?: string, limit?: string, unranked?: boolean) {
+
+export async function getTopPlaysForUser(userid: number, args: TopPlayArguments) {
+
+    // Get recent plays
+    const max = 10;
+    const offset = 0;
+
+    const topPlays = await getTopForUser(userid, args.mode ?? Gamemode.OSU, offset, max, false);
+    if (topPlays.length == 0) {
+        throw new Error("NORECENTPLAYS");
+    }
+
+    // Apply filter
+    const filteredTop = topFilterAndSort(topPlays, args);
+    if (filteredTop.length > 0) {
+        throw new Error("NOPLAYFOUND");
+    }
+
+    //const common = await getCommonData(recentplay);
+
+    const userBest: UserBest = new UserBest();
+    userBest.scores = topPlays;
+
+
+    return userBest;
+}
+
+export async function getTopForUser(userid: number, mode: Gamemode, offset?: number, limit?: number, unranked?: boolean): Promise<OsuScore[]> {
 
     let bestplays: OsuScore[] = [];
 
@@ -33,20 +64,14 @@ export async function getTopForUser(userid: number, mode: Gamemode, offset?: str
         bestplays = await loadAndCacheTopFromBancho(bestplays, userid, offset, limit, mode);
     }
 
-    const returnArray: Best[] = [];
-
     if (bestplays == undefined || bestplays == null) {
         throw new Error("NOPLAYSFOUND")
     }
 
-    bestplays.forEach((play: OsuScore, index: number) => {
-        returnArray.push({ position: index, value: play });
-    });
-
-    return returnArray;
+    return bestplays;
 }
 
-async function loadAndCacheTopFromBancho(bestplays: OsuScore[], userid: number, offset: string | undefined, limit: string | undefined, mode: Gamemode) {
+async function loadAndCacheTopFromBancho(bestplays: OsuScore[], userid: number, offset: number | undefined, limit: number | undefined, mode: Gamemode) {
 
     bestplays = await getBanchoTop(userid, offset, limit, mode);
 
@@ -137,7 +162,7 @@ export async function getTopPositionForUser(play: OsuScore, mode: Gamemode, unra
 
     const position = new TopPosition();
 
-    let foundTop: Best | undefined = top.find(s => s.value.id === play.best_id);
+    let foundTop = top.find(s => s.best_id.id === play.best_id);
 
     if (foundTop) {
         position.index = foundTop.position;
@@ -146,12 +171,12 @@ export async function getTopPositionForUser(play: OsuScore, mode: Gamemode, unra
         return position;
     }
 
-    const sameBeatmap: Best | undefined = top.find(s => s.value.beatmap.id === play.beatmap.id);
+    const sameBeatmap = top.find(s => s.beatmap.id === play.beatmap.id);
 
     // If the same beatmap is in top check if sv1d
     if (sameBeatmap) {
 
-        const beatmapScore = sameBeatmap.value;
+        const beatmapScore = sameBeatmap;
 
         if (play.pp && beatmapScore.pp! < play.pp && beatmapScore.total_score > play.total_score) {
             position.index = sameBeatmap.position;
@@ -162,7 +187,7 @@ export async function getTopPositionForUser(play: OsuScore, mode: Gamemode, unra
 
     }
 
-    foundTop = top.find(s => s.value.pp! < play.pp!);
+    foundTop = top.find(s => s.pp! < play.pp!);
 
     if (foundTop) {
 

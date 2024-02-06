@@ -13,7 +13,7 @@ import { calculateAcc } from "../../utility/stats";
 import { getBeatmapFromCache } from "../beatmap/beatmap";
 import { LeaderboardPosition } from "../leaderboard/leaderboard";
 import { getAkatsukiUserById } from "../profile/profile";
-import { TopPosition } from "../top/top";
+import { TopPosition } from "../top/topBancho";
 import { CommonData, CommonDataReturnTypes, RecentPlayArguments, RecentScore, getPerformance } from "./recentHandler";
 import beatmap from "../../../mongodb/beatmap";
 import { Server } from "../../../interfaces/enum/server";
